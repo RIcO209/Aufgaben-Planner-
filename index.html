@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Planner</title>
+    <link rel="stylesheet" href="./style.css?v=3">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header class="topbar">
+
+        <nav class="actions" aria-label="Hauptmenü">
+            <button class="action-btn action-btn-primary" type="button" onclick="openModal('task-modal')">+ Neue Aufgabe</button>
+            <button class="action-btn" type="button" onclick="openModal('settings-modal')">Settings</button>
+        </nav>
+    </header>
+
+    <main id="start" class="page">
+
+
+        <section class="tasks-section" aria-labelledby="tasks-heading">
+            <div class="section-heading">
+                <h2 id="tasks-heading">Aufgaben</h2>
+                <span id="task-count" class="task-count">0 Aufgaben</span>
+            </div>
+            <div id="task-list" class="task-list"></div>
+            <p id="empty-state" class="empty-state">Keine Aufgaben</p>
+        </section>
+    </main>
+
+    <template id="day-template">
+        <section class="task-day-group">
+            <h3 class="task-day-header"></h3>
+            <div class="day-tasks"></div>
+        </section>
+    </template>
+
+    <template id="task-template">
+        <article class="task-card">
+            <label class="task-check">
+                <input class="task-checkbox" type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <div class="task-information">
+                <strong class="task-title"></strong>
+                <span class="task-countdown"></span>
+                <span class="task-subject"></span>
+                <span class="task-kind"></span>
+                <span class="task-details"></span>
+                <p class="task-notes"></p>
+            </div>
+            <button class="task-delete" type="button">Löschen</button>
+        </article>
+    </template>
+
+    <div id="task-modal" class="modal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal(document.getElementById('task-modal'))"></div>
+        <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+            <form id="task-form" class="modal-body" onsubmit="addTask(event)">
+                <label class="form-field">
+                    Fach
+                    <select id="subject" required>
+                        <option value="">Fach auswählen</option>
+                    </select>
+                </label>
+                <label class="form-field">
+                    Aufgabenart
+                    <select id="kind" required>
+                        <option value="">Art auswählen</option>
+                        <option>Buch-Aufgabe</option>
+                        <option>Heft-Aufgabe</option>
+                        <option>Arbeitsblatt</option>
+                        <option>Klausur</option>
+                        <option>Andere
+                        </option>
+                    </select>
+                </label>
+                <div class="form-row form-row-fields">
+                    <label class="form-field">
+                        Kapitel
+                        <input id="chapter" type="text" placeholder="z. B. Kapitel 3">
+                    </label>
+                    <label class="form-field">
+                        Seite
+                        <input id="page" type="text" placeholder="z. B. 42–45">
+                    </label>
+                    <label class="form-field">
+                        Aufgabe
+                        <input id="exercise" type="text" placeholder="z. B. Nr. 4">
+                    </label>
+                </div>
+                <label class="form-field">
+                    Fällig am
+                    <input id="due-date" type="date" required>
+                </label>
+                <label class="form-field">
+                    Notiz
+                    <textarea id="notes" rows="4" placeholder="Was musst du erledigen?"></textarea>
+                </label>
+                <footer class="modal-footer">
+                    <button class="action-btn" type="button" onclick="closeModal(document.getElementById('task-modal'))">Abbrechen</button>
+                    <button class="action-btn action-btn-primary" type="submit">Aufgabe speichern</button>
+                </footer>
+            </form>
+        </section>
+    </div>
+
+    <div id="settings-modal" class="modal" aria-hidden="true">
+        <div class="modal-overlay" onclick="closeModal(document.getElementById('settings-modal'))"></div>
+        <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+            <header class="modal-header">
+                <h2 id="settings-modal-title">Settings</h2>
+                <button class="modal-close" type="button" onclick="closeModal(document.getElementById('settings-modal'))" aria-label="Fenster schließen">×</button>
+            </header>
+            <div class="modal-body">
+                <section class="setting-section">
+                    <h3>Darstellung</h3>
+                    <label class="theme-setting">
+                        <input id="theme-toggle" type="checkbox" onchange="toggleTheme()">
+                        <span>Heller Modus</span>
+                    </label>
+                </section>
+                <h3>Meine Fächer</h3>
+                <p class="muted">Füge deine Fächer hinzu oder entferne sie.</p>
+                <div id="subject-list" class="subject-list"></div>
+                <form id="subject-form" class="add-subject-form" onsubmit="addSubject(event)">
+                    <input id="new-subject" type="text" placeholder="Neues Fach" required>
+                    <button class="action-btn" type="submit">Hinzufügen</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
